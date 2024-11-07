@@ -1,0 +1,40 @@
+{% include 'header.html' %}
+<main id="profile">
+    <div>
+        {% for user in user_profile %}
+        <div  class="Profile_img"><a href="{{ user['avatarfull'] }}" target="_blank"><img src="{{ user['avatarfull'] }}" alt="Avatar"></a></div>
+        <p><strong>Real name:</strong> {{user["realname"]}} <br></p>
+        <p><strong>Persona name:</strong> {{user["personaname"]}} <br></p>
+        <p><strong>Profiel URL:</strong> <a href="{{ user['profileurl'] }}" target="_blank">My Steam profile</a><br></p>
+        <p><strong>Country code:</strong> {{user["loccountrycode"]}} <br></p>
+        <p><a href="{{ url_for('owned_games') }}"><strong>Owned games</strong></a> {{owned_games["game_count"]}}</p>
+        {% endfor %}
+    </div>
+   <div id="friends_list">
+        <h1>5 oldest friends: </h1>
+        {% for friends_info_list in friend_list_info %}
+            {% for friend_info in friends_info_list %}
+                <div class="list">
+                    <p>{{friend_info["personaname"]}}:</p>
+                    {% if friend_info["personastate"] == 0 %}
+                        <p class="status offline"> Offline</p>
+                    {% elif friend_info["personastate"] == 1 %}
+                        <p class="status online"> Online</p>
+                    {% elif friend_info["personastate"] == 2 %}
+                        <p class="status busy"> Busy</p>
+                    {% elif friend_info["personastate"] == 3 %}
+                        <p class="status away"> Away</p>
+                    {% elif friend_info["personastate"] == 4 %}
+                        <p class="status away"> Soonze</p>
+                    {% elif friend_info["personastate"] == 5 %}
+                        <p class="status busy"> Looking to Trade</p>
+                    {% elif friend_info["personastate"] == 6 %}
+                        <p class="status busy"> Looking to play</p>
+                    {% endif %}
+                    <br>
+                </div>
+            {% endfor %}
+        {% endfor %}
+   </div>
+</main>
+{% include 'footer.html' %}
