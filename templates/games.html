@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game['name'] }} - Game Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <h1>Game Profile</h1>
+
+    <p><strong>Game Name:</strong> {{ game.get('name', 'No Name Available') }}</p>
+
+    <p><strong>Release Date:</strong> {{ game.get('release_date', 'No Release Date Available') }}</p>
+
+    <p><strong>Developer:</strong> {{ game.get('developer', 'No Developer Available') }}</p>
+
+    <p><strong>Publisher:</strong> {{ game.get('publisher', 'No Publisher Available') }}</p>
+
+    <p><strong>Price:</strong> {{ game.get('price', 'No Price Available') }}</p>
+
+    <p><strong>Platforms:</strong> {{ game.get('platforms', 'Not Available') }}</p>
+
+    <p><strong>Categories:</strong>
+        {% if game.get('categories') %}
+            {{ game['categories'] }}
+        {% else %}
+            No Categories Available
+        {% endif %}
+    </p>
+
+    <p><strong>Genres:</strong>
+        {% if game.get('genres') %}
+            {{ game['genres'] }}
+        {% else %}
+            No Genres Available
+        {% endif %}
+    </p>
+
+    <h2>Achievements</h2>
+    {% if game.get('achievements') %}
+        <ul>
+            {% for achievement in game['achievements'] %}
+                <li><strong>{{ achievement }}</strong></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No achievements available.</p>
+    {% endif %}
+
+    <h2>Screenshots</h2>
+    {% if game.get('screenshots') %}
+        {% for screenshot in game['screenshots'] %}
+            <img src="{{ screenshot }}" alt="Screenshot" style="max-width: 100%; height: auto; margin-bottom: 10px;">
+        {% endfor %}
+    {% else %}
+        <p>No screenshots available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Go to Home</a>
+</body>
+</html>
