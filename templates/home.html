@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Game Profiles</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <!-- Add Banner -->
+    <div class="banner-div">
+        <img src="{{ url_for('static', filename='images/steam-logo-welcome-banner.jpg') }}" alt="Steam Welcome Banner">
+        <!-- Friends List Button -->
+        <div class="button-container">
+            <a href="{{ url_for('friends_list') }}">
+                <button class="friends-list-button">Friends</button>
+            </a>
+        </div>
+    </div>
+
+    <h1 class="dashboard-text">Welcome to Steam Game Profiles</h1>
+
+    <!-- Form for Steam App ID and API Key -->
+    <form action="{{ url_for('profile') }}" method="get">
+        <label for="appid" class="form-label">Enter Steam App ID:</label>
+        <input type="text" id="appid" name="appid" required>
+        <br>
+        <label for="api_key" class="form-label">Enter Steam API Key:</label>
+        <input type="text" id="api_key" name="api_key" required>
+        <br>
+        <input type="submit" value="Get Profile">
+    </form>
+
+    <!-- Dynamic Game List from Database -->
+    <div class="game-list-section">
+        <ul>
+            {% if games %}
+                {% for game in games %}
+                    <li>
+                        <a href="{{ url_for('game_details', appid=game['appid']) }}">
+                            {{ game['name'] }}
+                        </a>
+                    </li>
+                {% endfor %}
+            {% else %}
+
+            {% endif %}
+        </ul>
+    </div>
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
