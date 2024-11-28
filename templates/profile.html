@@ -1,0 +1,70 @@
+{% include 'header.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='../static/css/main.css') }}">
+
+<body class="game-profile">
+    <div class="content-wrapper">
+        <main id="profile-container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h1>Game Profile</h1>
+                </div>
+
+                <h2>{{ user_profile.get('name', 'No Name Available') }}</h2>
+
+                <p><strong>Release Date:</strong> {{ user_profile.get('release_date', 'No Release Date Available') }}</p>
+                <p><strong>Developer:</strong> {{ user_profile.get('developer', 'No Developer Available') }}</p>
+                <p><strong>Publisher:</strong> {{ user_profile.get('publisher', 'No Publisher Available') }}</p>
+                <p><strong>Price:</strong> €{{ user_profile.get('price', 'N/A') }}</p>
+                <p><strong>Platforms:</strong>
+                    Windows: {{ 'Yes' if user_profile.get('platforms', {}).get('windows', False) else 'No' }},
+                    Mac: {{ 'Yes' if user_profile.get('platforms', {}).get('mac', False) else 'No' }},
+                    Linux: {{ 'Yes' if user_profile.get('platforms', {}).get('linux', False) else 'No' }}
+                </p>
+
+                <p><strong>Categories:</strong>
+                    {% if user_profile.get('categories') %}
+                        {% for category in user_profile['categories'] %}
+                            {{ category }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No Categories Available
+                    {% endif %}
+                </p>
+
+                <p><strong>Genres:</strong>
+                    {% if user_profile.get('genres') %}
+                        {% for genre in user_profile['genres'] %}
+                            {{ genre }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        No Genres Available
+                    {% endif %}
+                </p>
+
+                <p><strong>Owners:</strong> {{ user_profile.get('owners', 'N/A') }}</p>
+                <p><strong>Median Playtime:</strong> {{ user_profile.get('median_playtime', 'N/A') }} minutes</p>
+                <p><strong>Average Playtime:</strong> {{ user_profile.get('average_playtime', 'N/A') }} minutes</p>
+                <p><strong>Positive Ratings:</strong> {{ user_profile.get('positive_ratings', 'N/A') }}</p>
+                <p><strong>Negative Ratings:</strong> {{ user_profile.get('negative_ratings', 'N/A') }}</p>
+                <p><strong>Achievements:</strong> {{ user_profile.get('achievements', 'N/A') }}</p>
+
+                <p><strong>SteamSpy Tags:</strong>
+                    {% if user_profile.get('steamspy_tags') %}
+                        {% for tag in user_profile['steamspy_tags'] %}
+                            {{ tag }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+
+                <p><strong>Required Age:</strong> {{ user_profile.get('required_age', 'N/A') }}</p>
+                <p><strong>Language (English):</strong> {{ user_profile.get('english', 'No') }}</p>
+
+                <a class="home-link" href="{{ url_for('home') }}">Go to Home</a>
+            </div>
+        </main>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
