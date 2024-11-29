@@ -3,10 +3,6 @@
 # Bronen: W3school, more to come.
 
 from flask import Flask, render_template, abort, url_for, request, redirect
-
-
-
-
 import psycopg2
 from psycopg2 import sql
 import requests

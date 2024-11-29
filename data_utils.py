@@ -1,3 +1,7 @@
+# Team FaaaM,
+# Opdracht: Steam
+# Bronen: W3school, more ...
+
 import pandas as pd
 from sqlalchemy import create_engine
 

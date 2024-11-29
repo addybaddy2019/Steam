@@ -1,3 +1,7 @@
+# Team FaaaM,
+# Opdracht: Steam
+# Bronen: W3school, more ...
+
 from flask import Flask, render_template, abort, url_for
 from sqlalchemy import create_engine, text
 
