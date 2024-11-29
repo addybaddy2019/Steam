@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <div class="content-div">
+        <h1 class="dashboard-text">Friends List</h1>
+        <div id="friends_list">
+            {% if friends %}
+                {% for friend in friends %}
+                    <div class="list">
+                        <span>{{ friend['name'] }}</span>
+                        <span class="status status-{{ friend['status'] }}">{{ friend['status'] }}</span>
+                        <span class="game-playing">
+                            {% if friend['playing'] %}
+                                Currently playing: {{ friend['playing'] }}
+                            {% else %}
+                                Not currently playing anything.
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No friends available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
