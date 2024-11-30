@@ -2,7 +2,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Free steam website where you can find game data, statistics and profile information">
+    <meta name="description" content="Free steam website where you can find game data, statistics, and profile information">
     <meta name="keywords" content="Steam, Html, Css, Javascript, Statistics, Friends, Gaming">
     <meta name="author" content="Beau Gunther, Esra Cicek, Hanin Suwaid, Olivier Oostermann, Rick van der Voort">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
@@ -23,8 +23,12 @@
             <ul class="menu" style="margin-left: auto; display: flex; gap: 20px;">
                 <li><a href="{{ url_for('home') }}">Dashboard</a></li>
                 <li><a href="{{ url_for('stats') }}">Stats</a></li>
-                <li><a href="https://store.steampowered.com/login/?redir=login%2F&redir_ssl=1&snr=1_60_4__global-header" target="_blank">Profile</a></li>
-
+                {% if session.get('logged_in') %}
+                    <li><a href="{{ url_for('user_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('login_page') }}">Login</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
