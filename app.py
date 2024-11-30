@@ -1,14 +1,11 @@
-# Team FaaaM,
-# Opdracht: Steam
-# Bronen: W3school, more to come.
-
-from flask import Flask, render_template, abort, url_for, request, redirect
+from flask import Flask, render_template, abort, url_for, request, redirect, session
 import psycopg2
 from psycopg2 import sql
 import requests
 import json
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'
 
 # Database connection details
 DB_HOST = '40.114.250.29'
@@ -63,11 +60,10 @@ def get_game_data_from_db(appid):
         cursor.close()
         connection.close()
         if games_data:
-            # Correctly map each value to its corresponding column
             return {
                 "appid": games_data[0],
                 "name": games_data[1],
-                "release_date": str(games_data[2]),  # Convert to string for template
+                "release_date": str(games_data[2]),
                 "english": games_data[3],
                 "developer": games_data[4] if games_data[4] else "No Developer Available",
                 "publisher": games_data[5] if games_data[5] else "No Publisher Available",
@@ -92,10 +88,6 @@ def get_game_data_from_db(appid):
         print(f"Error fetching data from database: {e}")
     return None
 
-
-
-
-
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
@@ -104,24 +96,25 @@ def home():
         if appid and api_key:
             return redirect(url_for('profile', appid=appid, api_key=api_key))
         return render_template('home.html', error="App ID and API Key are required.")
-    return render_template('home.html', friends=friends_data)
+    return render_template('home.html')
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    appid = request.args.get('appid')
-    api_key = request.args.get('api_key')
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
 
-    if not appid or not api_key:
+    appid = request.args.get('appid')
+
+    if not appid:
         abort(400)
 
     user_profile = get_game_data_from_db(appid)
     if user_profile:
         return render_template('profile.html', user_profile=user_profile)
     else:
-        api_profile = steam_game_info(appid, api_key)
-        if api_profile and str(appid) in api_profile and api_profile[str(appid)]["success"]:
-            return render_template('profile.html', user_profile=api_profile[str(appid)]["data"])
-    abort(404)
+        # Optional: Include API handling if needed for additional data
+        abort(404)
+
 
 @app.route('/game/<int:appid>', methods=['GET'])
 def game_details(appid):
@@ -135,17 +128,98 @@ def game_details(appid):
 def stats():
     return render_template('stats.html')
 
-@app.route('/owned_games', methods=['GET'])
-def owned_games():
-    games_list = [
-            {"appid": 12345, "game_info": {"gameName": "Game 1"}},
-        {"appid": 67890, "game_info": {"gameName": "Game 2"}},
-    ]
-    return render_template('owned_games.html', game_name=games_list)
+@app.route('/login_page', methods=['GET', 'POST'])
+def login_page():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == 'lost_profile' and password == 'FAAAM':
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('user_profile'))
+        else:
+            error_message = "Invalid username or password."
+            return render_template('login_page.html', error=error_message)
+    return render_template('login_page.html')
+
+@app.route('/user_profile', methods=['GET'])
+def user_profile():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
+
+    user_id = 1
+    purchased_games = []
+
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+        query = "SELECT * FROM purchased_games WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        purchased_games = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(f"Error fetching purchased games: {e}")
+
+    return render_template('user_profile.html', purchased_games=purchased_games, friends=friends_data)
 
 @app.route('/friends_list', methods=['GET'])
 def friends_list():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
     return render_template('friends_list.html', friends=friends_data)
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
+
+
+@app.route('/bought_games', methods=['GET'])
+@app.route('/bought_games', methods=['GET'])
+@app.route('/bought_games', methods=['GET'])
+def bought_games():
+    fixed_game_ids = [825930, 1178150, 20200, 1097880, 1659180]
+    bought_games = []
+
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+
+        # Fetch the games with fixed app IDs
+        query = "SELECT appid, name, price FROM games_data WHERE appid = ANY(%s)"
+        cursor.execute(query, (fixed_game_ids,))
+        results = cursor.fetchall()
+        for result in results:
+            bought_games.append({
+                "appid": result[0],
+                "name": result[1],
+                "price": f"${result[2]:.2f}" if result[2] else "Free"
+            })
+
+        cursor.close()
+        connection.close()
+    except Exception as e:
+        print(f"Error fetching bought games: {e}")
+
+    return render_template('bought_games.html', bought_games=bought_games)
+
+
+    return render_template('bought_games.html', bought_games=bought_games)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
