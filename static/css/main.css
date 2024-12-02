@@ -1,0 +1,471 @@
+/* General Styling */
+* {
+    font-family: 'Motiva Sans', sans-serif;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 1.2rem;
+    z-index: inherit;
+}
+
+html, body {
+    height: 100%; 
+    overflow-x: hidden; 
+}
+
+body {
+    color: #c7d5e0;
+    background-color: #1b2838; 
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Specific Background for Game Profile Page */
+body.game-profile {
+    background: url('../images/steam-profile-background.jpg') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Content Wrapper to Push Footer to Bottom */
+.content-wrapper {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+}
+
+body img {
+    max-width: 100%;
+}
+
+/* Header Styling */
+.header {
+    z-index: 999;
+    height: 120px;
+    background-color: #171d25;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 100px;
+    padding: 20px;
+    margin-left: 30px;
+}
+
+.menu {
+    line-height: 115px;
+    list-style: none;
+}
+
+.menu a {
+    text-align: right;
+    margin-right: 50px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #c7d5e0;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.menubutton {
+    display: none;
+    float: right;
+    color: #c7d5e0;
+    font-size: 40px;
+    line-height: 80px;
+}
+
+/* Footer Styling */
+footer {
+    width: 100%;
+    min-height: 160px;
+    background-color: #171d25;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    color: #8F98A0;
+    font-size: 1rem;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+}
+
+footer .container {
+    width: 80%;
+    max-width: 1200px;
+    text-align: center;
+}
+
+footer .primary_links {
+    margin-bottom: 15px;
+}
+
+footer .primary_links ul {
+    padding: 0;
+    margin: 0;
+}
+
+footer .primary_links li {
+    list-style: none;
+    display: inline-block; 
+    margin: 0 15px; 
+}
+
+footer .primary_links li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #c7d5e0;
+    transition: color 0.3s ease;
+}
+
+footer .primary_links li a:hover {
+    color: #ffffff;
+}
+
+footer .secondary_links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+footer .secondary_links li {
+    list-style: none;
+    display: inline-block; 
+    margin: 0 10px;
+}
+
+footer .secondary_links li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #c7d5e0;
+    transition: color 0.3s ease;
+}
+
+footer .secondary_links li a:hover {
+    color: #ffffff;
+}
+
+footer .secondary_links p {
+    margin: 0;
+    color: #8F98A0;
+    font-size: 16px;
+}
+
+footer a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #c7d5e0;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffffff;
+}
+
+/* Banner and Content Styling */
+.content-div, .banner-div, .banner-div-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    position: relative;
+}
+
+.banner-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    width: 100%;
+    height: 350px;
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../images/steam-logo-welcome-banner.jpg') center/cover;
+    border-radius: 10px;
+    border: 2px solid #171d25;
+    position: relative;
+}
+
+.banner-div img {
+    max-width: 35%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.Profile_img img {
+    height: 200px;
+    filter: drop-shadow(#171d25 0.5rem 0.5rem 25px);
+    border-radius: 7px;
+}
+
+.Profile_img {
+    padding: 5vh;
+}
+
+#friends_list, .dashboard-text, .banner-text, .stats_text {
+    text-align: center;
+}
+
+/* Friends List Button Styling */
+.button-container {
+    position: absolute;
+    left: 20px;
+    bottom: 10px;
+}
+
+.friends-list-button {
+    padding: 5px 10px;
+    border-radius: 8px;
+    background-color: #1f7a8c;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.friends-list-button:hover {
+    background-color: #145366;
+}
+
+.friends-list-button:focus {
+    transform: scale(1.05);
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+}
+
+label {
+    font-size: 1.5rem;
+    color: #c7d5e0;
+    margin-bottom: 10px;
+    text-align: center;
+    display: block;
+}
+
+input[type="text"], input[type="password"] {
+    width: 25%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 10px;
+    background-color: #444;
+    color: white;
+    border: 3px solid #1b2838;
+    transition: transform 0.4s;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    transform: scale(1.05);
+}
+
+input[type="submit"] {
+    width: 20%;
+    padding: 15px;
+    margin: 20px auto;
+    display: block;
+    border: none;
+    border-radius: 10px;
+    background-color: #6a6a6a;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 3px solid #1b2838;
+    transition: transform 0.4s, background-color 0.3s;
+}
+
+/* Games Profile Container Styling */
+#profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    flex: 1;
+}
+
+.profile-card {
+    background-color: rgba(23, 29, 37, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    padding: 30px;
+    max-width: 600px;
+    width: 100%;
+    margin: 20px;
+}
+
+.profile-header h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.profile-card h2 {
+    font-size: 2rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.profile-card p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.profile-card p strong {
+    color: #61dafb;
+}
+
+.home-link {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #61dafb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-link:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+/* Friends List Styling */
+#friends_list {
+    text-align: center;
+    margin-top: 20px;
+    color: #c7d5e0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-text {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Updated Friend Box Styling */
+.list {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 15px 30px;
+    background-color: rgba(23, 29, 37, 0.9);
+    border-radius: 10px;
+    width: 400%;
+    max-width: 2200px;
+    margin-left: 80px;
+    margin-right: 160px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+}
+
+.list span {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+.status-online {
+    color: green;
+}
+
+.status-offline {
+    color: gray;
+}
+
+.status-busy {
+    color: red;
+}
+
+.status-away {
+    color: orange;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .menu {
+        position: fixed;
+        width: 100%;
+        height: 100vh;
+        background-color: #171d25;
+        right: -200%;
+        margin-top: 120px;
+        text-align: center;
+        transition: 250ms;
+    }
+
+    .menu a {
+        display: block;
+        padding: 20px;
+    }
+
+    #chk:checked ~ .menu {
+        right: 0;
+    }
+
+    .menubutton {
+        display: block;
+        float: right;
+        padding-right: 44px;
+        padding-top: 30px;
+    }
+
+    .list {
+        max-width: 90%;
+    }
+
+    .profile-card {
+        padding: 20px;
+        max-width: 90%;
+    }
+
+    .profile-header h1 {
+        font-size: 2rem;
+    }
+
+    .profile-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .profile-card p {
+        font-size: 1rem;
+    }
+
+    .home-link {
+        font-size: 1rem;
+    }
+}
