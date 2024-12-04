@@ -29,23 +29,6 @@
         <input type="submit" value="Get Profile">
     </form>
 
-    <!-- Dynamic Game List from Database -->
-    <div class="game-list-section">
-        <ul>
-            {% if games %}
-                {% for game in games %}
-                    <li>
-                        <a href="{{ url_for('game_details', appid=game['appid']) }}">
-                            {{ game['name'] }}
-                        </a>
-                    </li>
-                {% endfor %}
-            {% else %}
-
-            {% endif %}
-        </ul>
-    </div>
-
     <footer>
         {% include 'footer.html' %}
     </footer>
