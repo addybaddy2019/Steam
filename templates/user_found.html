@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        body {
+            background-color: #121212;
+        }
+
+        .profile-container {
+            width: 95%; /* Stretch the container nearly full-width */
+            margin: 50px auto;
+            display: flex;
+            gap: 30px;
+            color: #f1f1f1;
+            padding: 50px;
+            background-color: #1e1e1e;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
+            font-size: 1.4rem;
+        }
+
+        .left-section {
+            flex: 1;
+            text-align: center;
+            padding: 40px;
+            background-color: #232323;
+            border-radius: 30px;
+        }
+
+        .left-section img {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 6px solid #1f7a8c;
+            margin-bottom: 30px;
+        }
+
+        .left-section h2 {
+            font-size: 2.8rem;
+            color: #61dafb;
+            margin-bottom: 20px;
+        }
+
+        .level {
+            background-color: #1f7a8c;
+            color: #ffffff;
+            padding: 20px 40px;
+            font-size: 1.6rem;
+            border-radius: 15px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .right-section {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .recent-activity,
+        .friends-section,
+        .bought-games-section {
+            background-color: #232323;
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .recent-activity h3,
+        .friends-section h3,
+        .bought-games-section h3 {
+            font-size: 2.4rem;
+            color: #61dafb;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1f7a8c;
+            padding-bottom: 10px;
+        }
+
+        .recent-activity ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recent-activity li {
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .recent-activity li strong {
+            color: #61dafb;
+            font-size: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #1f7a8c;
+            padding: 20px 40px;
+            border-radius: 15px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #145366;
+            transform: scale(1.08);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <div class="profile-container">
+        <!-- Left Section -->
+        <div class="left-section">
+            <img src="{{ url_for('static', filename='Images/pfp_found_profile.png') }}" alt="User Profile Picture">
+            <h2>{{ session['username'] }}</h2>
+            <div class="level">Level 10</div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="right-section">
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <ul>
+                    <li><strong>Minecraft</strong> - 12 hrs on record (last played on Nov 29)</li>
+                    <li><strong>overwatch</strong> - 7.2 hrs on record (last played on Nov 20)</li>
+                    <li><strong>Elden Ring</strong> - 14.3 hrs on record (last played on Jun 8)</li>
+                </ul>
+            </div>
+
+            <!-- Friends Section -->
+            <div class="friends-section">
+                <h3>Friends</h3>
+                <p>Want to see your friends list?</p>
+                <a href="{{ url_for('friends_list') }}" class="btn">View Friends List</a>
+            </div>
+
+            <!-- Bought Games Section -->
+            <div class="bought-games-section">
+                <h3>Bought Games</h3>
+                <p>Want to view your purchased games?</p>
+                <a href="{{ url_for('bought_games') }}" class="btn">View Bought Games</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
