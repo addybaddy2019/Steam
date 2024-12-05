@@ -3,9 +3,14 @@ import psycopg2
 from psycopg2 import sql
 import requests
 import json
+import logging
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='a',
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Database connection details
 DB_HOST = '40.114.250.29'
@@ -84,8 +89,10 @@ def get_game_data_from_db(appid):
                 "owners": games_data[16] if games_data[16] else "N/A",
                 "price": str(games_data[17]) if games_data[17] is not None else "N/A"
             }
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e.pgcode} - {e.pgerror}")
     except Exception as e:
-        print(f"Error fetching data from database: {e}")
+        logging.error(f"Error fetching data from database: {str(e)}")
     return None
 
 @app.route('/', methods=['GET', 'POST'])
@@ -113,8 +120,6 @@ def profile():
         # Optional: Include API handling if needed for additional data
         abort(404)
 
-
-
 @app.route('/game/<int:appid>', methods=['GET'])
 def game_details(appid):
     games_data = get_game_data_from_db(appid)
@@ -136,11 +141,22 @@ def login_page():
             session['logged_in'] = True
             session['username'] = username
             return redirect(url_for('user_profile'))
-        if  username == 'found_profile' and password == 'FAAAM':
+        elif username == 'found_profile' and password == 'FAAAM':
             session['logged_in'] = True
             session['username'] = username
-            return redirect(url_for('user_found_profile'))
-
+            return redirect(url_for('user_found'))
+        elif username == 'achie' and password == 'FAAAM':
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('user_achie'))
+        elif username == 'addybaddy' and password == 'FAAAM':
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('user_addybaddy'))
+        elif username == 'morid' and password == 'FAAAM':
+            session['logged_in'] = True
+            session['username'] = username
+            return redirect(url_for('user_morid'))
         else:
             error_message = "Invalid username or password."
             return render_template('login_page.html', error=error_message)
@@ -168,10 +184,59 @@ def user_profile():
         purchased_games = cursor.fetchall()
         cursor.close()
         connection.close()
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e.pgcode} - {e.pgerror}")
     except Exception as e:
-        print(f"Error fetching purchased games: {e}")
+        logging.error(f"Error fetching purchased games: {str(e)}")
 
     return render_template('user_profile.html', purchased_games=purchased_games, friends=friends_data)
+
+@app.route('/user_found', methods=['GET'])
+def user_found():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
+
+    user_id = 1
+    purchased_games = []
+
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+        query = "SELECT * FROM purchased_games WHERE user_id = %s"
+        cursor.execute(query, (user_id,))
+        purchased_games = cursor.fetchall()
+        cursor.close()
+        connection.close()
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e.pgcode} - {e.pgerror}")
+    except Exception as e:
+        logging.error(f"Error fetching purchased games: {str(e)}")
+
+    return render_template('user_found.html', purchased_games=purchased_games, friends=friends_data)
+
+@app.route('/user_achie', methods=['GET'])
+def user_achie():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
+    return render_template('user_achie.html', friends=friends_data)
+
+@app.route('/user_addybaddy', methods=['GET'])
+def user_addybaddy():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
+    return render_template('user_addybaddy.html', friends=friends_data)
+
+@app.route('/user_morid', methods=['GET'])
+def user_morid():
+    if 'logged_in' not in session or not session['logged_in']:
+        return redirect(url_for('login_page'))
+    return render_template('user_morid.html', friends=friends_data)
 
 @app.route('/friends_list', methods=['GET'])
 def friends_list():
@@ -184,9 +249,6 @@ def logout():
     session.clear()
     return redirect(url_for('home'))
 
-
-@app.route('/bought_games', methods=['GET'])
-@app.route('/bought_games', methods=['GET'])
 @app.route('/bought_games', methods=['GET'])
 def bought_games():
     fixed_game_ids = [825930, 1178150, 20200, 1097880, 1659180]
@@ -215,15 +277,27 @@ def bought_games():
 
         cursor.close()
         connection.close()
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e.pgcode} - {e.pgerror}")
     except Exception as e:
-        print(f"Error fetching bought games: {e}")
+        logging.error(f"Error fetching bought games: {str(e)}")
 
     return render_template('bought_games.html', bought_games=bought_games)
 
-
-    return render_template('bought_games.html', bought_games=bought_games)
-
-
+@app.route('/profile_redirect', methods=['GET'])
+def profile_redirect():
+    if 'logged_in' not in session:
+        return redirect(url_for('login_page'))
+    if session['username'] == 'lost_profile':
+        return redirect(url_for('user_profile'))
+    elif session['username'] == 'found_profile':
+        return redirect(url_for('user_found'))
+    elif session['username'] == 'achie':
+        return redirect(url_for('user_achie'))
+    elif session['username'] == 'addybaddy':
+        return redirect(url_for('user_addybaddy'))
+    elif session['username'] == 'morid':
+        return redirect(url_for('user_morid'))
 
 if __name__ == '__main__':
     app.run(debug=True)
