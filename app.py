@@ -2,8 +2,8 @@ from flask import Flask, render_template, abort, url_for, request, redirect, ses
 import psycopg2
 from psycopg2 import sql
 import requests
-import json
 import logging
+import json
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -18,10 +18,6 @@ DB_PORT = '5432'
 DB_NAME = 'steamdb'
 DB_USER = 'teammember1'
 DB_PASSWORD = 'ASDFG'
-
-# Load the friends data from JSON file
-with open('friends_data.json', 'r') as file:
-    friends_data = json.load(file)
 
 def get_json_api(api, *keys):
     """
@@ -95,6 +91,43 @@ def get_game_data_from_db(appid):
         logging.error(f"Error fetching data from database: {str(e)}")
     return None
 
+def get_user_credentials():
+    """
+    Fetch user credentials from the user_credentials table in the Azure PostgreSQL database.
+    """
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+        query = "SELECT username, password FROM user_credentials"
+        cursor.execute(query)
+        user_credentials = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        return {username: password for username, password in user_credentials}
+    except psycopg2.Error as e:
+        logging.error(f"Database error: {e.pgcode} - {e.pgerror}")
+    except Exception as e:
+        logging.error(f"Error fetching user credentials: {str(e)}")
+    return {}
+
+def get_friends_list():
+    """
+    Fetch friends list from the local friends_data.json file.
+    """
+    try:
+        with open('friends_data.json', 'r') as file:
+            friends_data = json.load(file)
+            return friends_data.get('friends', [])
+    except Exception as e:
+        logging.error(f"Error reading friends data from JSON file: {str(e)}")
+    return []
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
@@ -134,29 +167,23 @@ def stats():
 
 @app.route('/login_page', methods=['GET', 'POST'])
 def login_page():
+    user_credentials = get_user_credentials()
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        if username == 'lost_profile' and password == 'FAAAM':
+        if username in user_credentials and user_credentials[username] == password:
             session['logged_in'] = True
             session['username'] = username
-            return redirect(url_for('user_profile'))
-        elif username == 'found_profile' and password == 'FAAAM':
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('user_found'))
-        elif username == 'achie' and password == 'FAAAM':
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('user_achie'))
-        elif username == 'addybaddy' and password == 'FAAAM':
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('user_addybaddy'))
-        elif username == 'morid' and password == 'FAAAM':
-            session['logged_in'] = True
-            session['username'] = username
-            return redirect(url_for('user_morid'))
+            if username == 'lost_profile':
+                return redirect(url_for('user_profile'))
+            elif username == 'found_profile':
+                return redirect(url_for('user_found'))
+            elif username == 'achie':
+                return redirect(url_for('user_achie'))
+            elif username == 'addybaddy':
+                return redirect(url_for('user_addybaddy'))
+            elif username == 'morid':
+                return redirect(url_for('user_morid'))
         else:
             error_message = "Invalid username or password."
             return render_template('login_page.html', error=error_message)
@@ -189,7 +216,7 @@ def user_profile():
     except Exception as e:
         logging.error(f"Error fetching purchased games: {str(e)}")
 
-    return render_template('user_profile.html', purchased_games=purchased_games, friends=friends_data)
+    return render_template('user_profile.html', purchased_games=purchased_games)
 
 @app.route('/user_found', methods=['GET'])
 def user_found():
@@ -218,31 +245,32 @@ def user_found():
     except Exception as e:
         logging.error(f"Error fetching purchased games: {str(e)}")
 
-    return render_template('user_found.html', purchased_games=purchased_games, friends=friends_data)
+    return render_template('user_found.html', purchased_games=purchased_games )
 
 @app.route('/user_achie', methods=['GET'])
 def user_achie():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
-    return render_template('user_achie.html', friends=friends_data)
+    return render_template('user_achie.html')
 
 @app.route('/user_addybaddy', methods=['GET'])
 def user_addybaddy():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
-    return render_template('user_addybaddy.html', friends=friends_data)
+    return render_template('user_addybaddy.html')
 
 @app.route('/user_morid', methods=['GET'])
 def user_morid():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
-    return render_template('user_morid.html', friends=friends_data)
+    return render_template('user_morid.html')
 
 @app.route('/friends_list', methods=['GET'])
 def friends_list():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
-    return render_template('friends_list.html', friends=friends_data)
+    friends = get_friends_list()
+    return render_template('friends_list.html', friends=friends)
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -283,6 +311,17 @@ def bought_games():
         logging.error(f"Error fetching bought games: {str(e)}")
 
     return render_template('bought_games.html', bought_games=bought_games)
+def get_friends_list():
+    """
+    Fetch friends list from the local friends_data.json file.
+    """
+    try:
+        with open('friends_data.json', 'r') as file:
+            friends_data = json.load(file)
+            return friends_data  # List of friends directly from JSON
+    except Exception as e:
+        logging.error(f"Error reading friends data from JSON file: {str(e)}")
+    return []
 
 @app.route('/profile_redirect', methods=['GET'])
 def profile_redirect():
