@@ -323,6 +323,8 @@ def get_friends_list():
         logging.error(f"Error reading friends data from JSON file: {str(e)}")
     return []
 
+
+
 @app.route('/profile_redirect', methods=['GET'])
 def profile_redirect():
     if 'logged_in' not in session:
@@ -338,5 +340,6 @@ def profile_redirect():
     elif session['username'] == 'morid':
         return redirect(url_for('user_morid'))
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
