@@ -30,11 +30,11 @@ Ons platform onderscheidt zich door:
 ## **Teamleden**
 | Naam                   | Studentnummer |
 |------------------------|---------------|
-| Murid                  | 1861078       |
+| Fu-An                  | 1888783       |
 | Adnan                  | 1881577       | 
 | Ahmed                  | 1879508       |
 | Anas                   | 1884188       | 
-| Fu-an                  | 1888783       |
+| Murid                  | 1861078       |
 
 ---
 
@@ -67,7 +67,4 @@ De GUI van het platform is ontworpen voor eenvoud en gebruiksvriendelijkheid. Be
 
 ## **Samenvatting**
 Het Steam-project is een interactieve dashboardapplicatie waarmee gebruikers gegevens en statistieken over games op het Steam-platform kunnen bekijken. Het biedt een gebruiksvriendelijke interface met functies zoals het inloggen op een profiel, het bekijken van gekochte spellen, vriendenlijsten, en statistische visualisaties. De applicatie is uniek dankzij de integratie met een Azure PostgreSQL-database, waardoor het toegankelijk is via een webbrowser zonder extra installaties.
-
 ---
-
-Met dit bestand voldoet je README aan alle eisen en is het klaar om in te leveren. Het is professioneel, volledig, en geeft een duidelijk overzicht van het project.
