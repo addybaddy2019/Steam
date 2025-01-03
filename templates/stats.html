@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics Overview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        /* Custom style for the "here" link */
+        .more-info-link {
+            font-size: 2.5rem; /* Increase font size */
+            font-weight: bold; /* Make the link bold */
+            color: #61dafb; /* Light blue color for better visibility */
+            text-decoration: underline; /* Underline the link */
+        }
+
+        .more-info-link:hover {
+            color: #fff; /* Change color on hover for contrast */
+            text-decoration: none; /* Remove underline on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <div class="content-div">
+        <h1>Statistics Overview</h1>
+
+        <!-- Most Played Games Graph -->
+        <div class="graph-container">
+            <h2>Most Played Games</h2>
+            <img src="{{ url_for('static', filename='Images/most_played_games.png') }}" alt="Most Played Games Graph">
+            <p>
+                Displays the top 10 most-played games by average playtime in minutes, based on data from the database.
+                You can find more information on the games <a href="{{ url_for('most_played_games') }}" class="more-info-link">here</a>.
+            </p>
+        </div>
+
+        <!-- Games per year -->
+        <div class="graph-container">
+            <h2>Games per year</h2>
+            <img src="{{ url_for('static', filename='Images/games_per_year.png') }}" alt="Games per year">
+            <p>
+                Highlights how many games are released per year and what was the peak period of producing games.
+            </p>
+        </div>
+
+        <!-- Playtime vs Achievements Graph -->
+        <div class="graph-container">
+            <h2>Playtime vs Achievements</h2>
+            <img src="{{ url_for('static', filename='Images/playtime_achievements_graph.png') }}" alt="Playtime vs Achievements Graph">
+            <p>
+                Shows the relationship between average playtime and the number of achievements unlocked in games.
+            </p>
+        </div>
+
+        <!-- Rating vs Price Graph -->
+        <div class="graph-container">
+            <h2>Rating vs Price</h2>
+            <img src="{{ url_for('static', filename='Images/rating_price_graph.png') }}" alt="Rating vs Price Graph">
+            <p>
+                Highlights how a game's average rating correlates with its price, derived from database analysis.
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
