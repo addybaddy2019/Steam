@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Most Played Games</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        /* General Styling */
+        body {
+            background-color: #1b2838; /* Dark blue background */
+            color: #ddd; /* Light text color */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Main content container */
+        .content-div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* Page title styling */
+        h1 {
+            font-size: 3.5rem; /* Increased font size */
+            color: #fff; /* White title text */
+            margin-bottom: 40px; /* Space below the title */
+        }
+
+        /* Styling for the list of games */
+        .game-list {
+            list-style: none; /* Remove default bullet points */
+            padding: 0; /* No padding for the list */
+        }
+
+        .game-list li {
+            background-color: #354f52; /* Dark teal background for each list item */
+            margin: 15px auto; /* Space between items */
+            padding: 15px 20px; /* Padding inside the items */
+            border-radius: 8px; /* Rounded corners */
+            max-width: 800px; /* Limit the width of the list items */
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+
+        .game-list li:hover {
+            transform: scale(1.05); /* Slight enlargement on hover */
+            background-color: #3e6068; /* Lighter shade on hover */
+        }
+
+        /* Styling for game links */
+        .game-list a {
+            text-decoration: none; /* Remove underline from links */
+            color: #61dafb; /* Light blue link color */
+            font-size: 1.6rem; /* Larger link font */
+            font-weight: bold;
+        }
+
+        .game-list a:hover {
+            color: #fff; /* White color on hover */
+        }
+
+        /* Footer styling */
+        footer {
+            margin-top: 50px; /* Space above footer */
+            background-color: #171d25; /* Darker footer background */
+            color: #8F98A0; /* Gray text */
+            text-align: center;
+            padding: 20px 0; /* Padding inside footer */
+            font-size: 0.9rem;
+            border-top: 2px solid #354f52; /* Subtle border at the top */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <!-- Main content -->
+    <div class="content-div">
+        <h1>Top 10 Most Played Games</h1>
+        <ul class="game-list">
+            <!-- List of games with clickable links to their profiles -->
+            <li><a href="{{ url_for('profile', appid=1071100) }}">Boom 3D</a></li>
+            <li><a href="{{ url_for('profile', appid=1055010) }}">Energy Engine PC Live Wallpaper</a></li>
+            <li><a href="{{ url_for('profile', appid=1195830) }}">Tlicolity Eyes</a></li>
+            <li><a href="{{ url_for('profile', appid=707590) }}">Defense Clicker</a></li>
+            <li><a href="{{ url_for('profile', appid=404580) }}">Relive</a></li>
+            <li><a href="{{ url_for('profile', appid=517910) }}">Sisyphus Reborn</a></li>
+            <li><a href="{{ url_for('profile', appid=1283970) }}">YoloMouse</a></li>
+            <li><a href="{{ url_for('profile', appid=610190) }}">WARRIORS ALL-STARS</a></li>
+            <li><a href="{{ url_for('profile', appid=554640) }}">Rescue the Great Demon 2</a></li>
+            <li><a href="{{ url_for('profile', appid=1369370) }}">Combat Mission Shock Force 2</a></li>
+        </ul>
+    </div>
+
+    <!-- Footer section -->
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
