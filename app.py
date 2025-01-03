@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='a',
 # Database connection details
 DB_HOST = '40.114.250.29'
 DB_PORT = '5432'
-DB_NAME = 'steamdb'
+DB_NAME = 'postgres'
 DB_USER = 'teammember1'
 DB_PASSWORD = 'ASDFG'
 
@@ -116,6 +116,9 @@ def get_user_credentials():
         logging.error(f"Error fetching user credentials: {str(e)}")
     return {}
 
+
+
+
 def get_friends_list():
     """
     Fetch friends list from the local friends_data.json file.
@@ -189,8 +192,8 @@ def login_page():
             return render_template('login_page.html', error=error_message)
     return render_template('login_page.html')
 
-@app.route('/user_profile', methods=['GET'])
-def user_profile():
+@app.route('/user_Igris_x', methods=['GET'])
+def user_Igris_x():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
 
@@ -216,10 +219,10 @@ def user_profile():
     except Exception as e:
         logging.error(f"Error fetching purchased games: {str(e)}")
 
-    return render_template('user_profile.html', purchased_games=purchased_games)
+    return render_template('user_Igris_x.html', purchased_games=purchased_games)
 
-@app.route('/user_found', methods=['GET'])
-def user_found():
+@app.route('/user_fufucela', methods=['GET'])
+def user_fufucela():
     if 'logged_in' not in session or not session['logged_in']:
         return redirect(url_for('login_page'))
 
@@ -245,7 +248,7 @@ def user_found():
     except Exception as e:
         logging.error(f"Error fetching purchased games: {str(e)}")
 
-    return render_template('user_found.html', purchased_games=purchased_games )
+    return render_template('user_fufucela.html', purchased_games=purchased_games)
 
 @app.route('/user_achie', methods=['GET'])
 def user_achie():
@@ -323,21 +326,48 @@ def get_friends_list():
         logging.error(f"Error reading friends data from JSON file: {str(e)}")
     return []
 
+@app.route('/most_played_games', methods=['GET'])
+def most_played_games():
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+        query = """
+        SELECT appid, name
+        FROM games_data
+        ORDER BY average_playtime DESC
+        LIMIT 10;
+        """
+        cursor.execute(query)
+        games = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        most_played_games = [{"appid": game[0], "name": game[1]} for game in games]
+        return render_template('most_played_games.html', most_played_games=most_played_games)
+    except Exception as e:
+        logging.error(f"Error fetching most played games: {str(e)}")
+        abort(500)
 
 
 @app.route('/profile_redirect', methods=['GET'])
 def profile_redirect():
     if 'logged_in' not in session:
         return redirect(url_for('login_page'))
-    if session['username'] == 'lost_profile':
-        return redirect(url_for('user_profile'))
-    elif session['username'] == 'found_profile':
-        return redirect(url_for('user_found'))
+    if session['username'] == 'Igris_x':
+        return redirect(url_for('user_Igris_x'))
+    elif session['username'] == 'fufucela':
+        return redirect(url_for('user_fufucela'))
     elif session['username'] == 'achie':
         return redirect(url_for('user_achie'))
     elif session['username'] == 'addybaddy':
         return redirect(url_for('user_addybaddy'))
-    elif session['username'] == 'morid':
+    elif session['username'] == 'mourid':
         return redirect(url_for('user_morid'))
 
 
