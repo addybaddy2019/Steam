@@ -28,13 +28,13 @@ Ons platform onderscheidt zich door:
 ---
 
 ## **Teamleden**
-| Naam                   | Studentnummer |
-|------------------------|---------------|
-| Fu-An                  | 1888783       |
-| Adnan                  | 1881577       | 
-| Ahmed                  | 1879508       |
-| Anas                   | 1884188       | 
-| Murid                  | 1861078       |
+| Naam  | Studentnummer |
+|-------|---------------|
+| Fu-An | 1888783       |
+| Adnan | 1881577       | 
+| Ahmed | 1879508       |
+| Anas  | 1884188       | 
+| MOrid | 1861078       |
 
 ---
 
