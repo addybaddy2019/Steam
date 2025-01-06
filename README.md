@@ -34,7 +34,7 @@ Ons platform onderscheidt zich door:
 | Adnan | 1881577       | 
 | Ahmed | 1879508       |
 | Anas  | 1884188       | 
-| MOrid | 1861078       |
+| Morid | 1861078       |
 
 ---
 
