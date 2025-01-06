@@ -1,4 +1,4 @@
-# Steam Project: Gaming Platform Dashboard
+# Project Steam: Gaming Platform Dashboard
 
 ## Overzicht
 Dit project is een dashboardapplicatie waarmee gebruikers interactief statistieken en informatie over games op het Steam-platform kunnen verkennen.  
