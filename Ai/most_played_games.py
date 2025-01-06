@@ -71,3 +71,9 @@ def plot_most_played_games():
 
 if __name__ == '__main__':
     plot_most_played_games()
+# Bronen:
+# https://canvas.hu.nl/courses/44597/pages/ai6-algoritmiek-lineaire-regressie
+# https://youtu.be/zcUliVmptHY?feature=shared
+# https://www.khanacademy.org/data/more-on-regression/v/regression-line-example
+# https://chatgpt.com/share/67649710-c464-8001-b3d1-bcd8e5397911
+# https://www-jetbrains-com.translate.goog/?hist=true#session
