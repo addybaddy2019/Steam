@@ -120,16 +120,16 @@
     </style>
 </head>
 <body>
-    <header>
+    <header role="banner">
         {% include 'header.html' %}
     </header>
 
     <div class="profile-container">
         <!-- Left Section -->
         <div class="left-section">
-            <img src="{{ url_for('static', filename='images/user-pfp.png') }}" alt="User Profile Picture">
-            <h2>{{ session['username'] }}</h2>
-            <div class="level">Level 3</div>
+            <img src="{{ url_for('static', filename='images/user-pfp.png') }}" alt="User Profile Picture" onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default-pfp.png') }}';">
+            <h2>{{ session.get('username', 'Guest') }}</h2>
+            <div class="level">Level 130</div>
         </div>
 
         <!-- Right Section -->
@@ -138,9 +138,9 @@
             <div class="recent-activity">
                 <h3>Recent Activity</h3>
                 <ul>
-                    <li><strong>Strinova</strong> - 17 hrs on record (last played on Nov 24)</li>
-                    <li><strong>Call of Duty®</strong> - 7.2 hrs on record (last played on Nov 20)</li>
-                    <li><strong>MultiVersus</strong> - 14.3 hrs on record (last played on Jun 8)</li>
+                    <li><strong>Elden ring</strong> - 320 hrs on record (last played on Nov 24)</li>
+                    <li><strong>Caseoh simulator</strong> - *TOO LARGE TO LOAD* hrs on record (last played on Nov 20)</li>
+                    <li><strong>Marvel Rivals</strong> - 67 hrs on record (last played on Dec 8)</li>
                 </ul>
             </div>
 
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <footer>
+    <footer role="contentinfo">
         {% include 'footer.html' %}
     </footer>
 </body>
