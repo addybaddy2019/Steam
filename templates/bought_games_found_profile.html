@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bought Games</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <style>
+        body {
+            background-color: #121212;
+            color: #f1f1f1;
+        }
+
+        .games-container {
+            max-width: 80%;
+            margin: 50px auto;
+            background-color: #1e1e1e;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .games-container h1 {
+            text-align: center;
+            color: #61dafb;
+            margin-bottom: 40px;
+        }
+
+        .game-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .game-list li {
+            background-color: #232323;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-list li a {
+            text-decoration: none;
+            color: #61dafb;
+            font-size: 1.6rem;
+            font-weight: bold;
+        }
+
+        .game-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% include 'header.html' %}
+    </header>
+
+    <div class="games-container">
+        <h1>Bought Games</h1>
+        <ul class="game-list">
+            <!-- Static Game List with Links -->
+            <li><a href="{{ url_for('profile', appid=551610) }}">Game Name: Virtual Army: Revolution</a></li>
+            <li><a href="{{ url_for('profile', appid=778700) }}">Game Name:  Amorous</a></li>
+            <li><a href="{{ url_for('profile', appid=1896900) }}">Game Name: Rail Route: The Story of Jozic</a></li>
+            <li><a href="{{ url_for('profile', appid=2053060) }}">Game Name: Travel The Words</a></li>
+            <li><a href="{{ url_for('profile', appid=500570) }}">Game Name: Mahjong Deluxe 2: Astral Planes</a></li>
+            <li><a href="{{ url_for('profile', appid=599160) }}">Game Name: Skeletal Dance Party</a></li>
+        </ul>
+    </div>
+
+    <footer>
+        {% include 'footer.html' %}
+    </footer>
+</body>
+</html>
