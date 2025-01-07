@@ -1,6 +1,5 @@
 import psycopg2
 import matplotlib.pyplot as plt
-from decimal import Decimal
 
 # Database connection details
 DB_HOST = '40.114.250.29'
@@ -11,8 +10,8 @@ DB_PASSWORD = 'ASDFG'
 
 def fetch_data_for_regression(query):
     """
-    Fetch data from the database for regression analysis.
-    Returns two lists: x and y.
+    Fetch and sort data for regression analysis from the database.
+    Returns two sorted lists: x and y.
     """
     try:
         connection = psycopg2.connect(
@@ -28,9 +27,10 @@ def fetch_data_for_regression(query):
         cursor.close()
         connection.close()
 
-        # Separate the data into x and y lists, converting Decimal to float
-        x = [float(row[0]) for row in results]
-        y = [float(row[1]) for row in results]
+        # Sort data by x-values (the first column)
+        sorted_results = sorted(results, key=lambda row: row[0])
+        x = [float(row[0]) for row in sorted_results]
+        y = [float(row[1]) for row in sorted_results]
         return x, y
     except psycopg2.Error as e:
         print(f"Database error: {e.pgcode} - {e.pgerror}")
@@ -40,21 +40,20 @@ def fetch_data_for_regression(query):
 
 def calculate_mean(data):
     """Calculate the mean of a list of numbers."""
-    total = sum(data)
-    return total / len(data) if data else 0
+    return sum(data) / len(data) if data else 0
 
 def calculate_median(data):
     """Calculate the median of a list of numbers."""
-    sorted_data = sorted(data)
-    n = len(sorted_data)
+    n = len(data)
+    if n == 0:
+        return 0
     mid = n // 2
     if n % 2 == 0:
-        return (sorted_data[mid - 1] + sorted_data[mid]) / 2
-    else:
-        return sorted_data[mid]
+        return (data[mid - 1] + data[mid]) / 2
+    return data[mid]
 
 def linear_regression_lsm(x, y):
-    """Linear regression using least squares method."""
+    """Linear regression using the least squares method."""
     x_mean = calculate_mean(x)
     y_mean = calculate_mean(y)
     numerator = sum((xi - x_mean) * (yi - y_mean) for xi, yi in zip(x, y))
@@ -65,7 +64,7 @@ def linear_regression_lsm(x, y):
 
 def gradient_descent(x, y, num_iterations=1000, learning_rate=0.0001):
     """Linear regression using gradient descent."""
-    b, a = linear_regression_lsm(x, y)  # Initial coefficients (bias and slope)
+    b, a = 0, 0  # Initialize coefficients
 
     for _ in range(num_iterations):
         for xi, yi in zip(x, y):
@@ -118,10 +117,6 @@ if __name__ == '__main__':
     coefficients_lsm1 = linear_regression_lsm(x1, y1)
     coefficients_gd1 = gradient_descent(x1, y1)
 
-    print("Predictive Statistics for Average Rating vs Price:")
-    print(f"LSM Coefficients: b0={coefficients_lsm1[0]:.2f}, b1={coefficients_lsm1[1]:.2f}")
-    print(f"Gradient Descent Coefficients: b0={coefficients_gd1[0]:.2f}, b1={coefficients_gd1[1]:.2f}")
-
     plot_regression(x1, y1, coefficients_lsm1, coefficients_gd1,
                     xlabel='Average Rating', ylabel='Price ($)',
                     title='Linear Regression: Average Rating vs Price',
@@ -143,10 +138,6 @@ if __name__ == '__main__':
 
     coefficients_lsm2 = linear_regression_lsm(x2, y2)
     coefficients_gd2 = gradient_descent(x2, y2)
-
-    print("Predictive Statistics for Playtime vs Achievements:")
-    print(f"LSM Coefficients: b0={coefficients_lsm2[0]:.2f}, b1={coefficients_lsm2[1]:.2f}")
-    print(f"Gradient Descent Coefficients: b0={coefficients_gd2[0]:.2f}, b1={coefficients_gd2[1]:.2f}")
 
     plot_regression(x2, y2, coefficients_lsm2, coefficients_gd2,
                     xlabel='Playtime (minutes)', ylabel='Achievements',
