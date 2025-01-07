@@ -4,7 +4,7 @@ from psycopg2 import sql
 import requests
 import logging
 import json
-# Team: FAAAM
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
@@ -177,10 +177,10 @@ def login_page():
         if username in user_credentials and user_credentials[username] == password:
             session['logged_in'] = True
             session['username'] = username
-            if username == 'lost_profile':
-                return redirect(url_for('user_profile'))
-            elif username == 'found_profile':
-                return redirect(url_for('user_found'))
+            if username == 'Igris_x':
+                return redirect(url_for('user_Igris_x'))
+            elif username == 'fufucela':
+                return redirect(url_for('user_fufucela'))
             elif username == 'achie':
                 return redirect(url_for('user_achie'))
             elif username == 'addybaddy':
