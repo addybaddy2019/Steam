@@ -53,29 +53,33 @@ def fetch_games_per_year():
 
 def calculate_mean(data):
     """
-    Calculate the mean (average) of a list of numbers.
+    Calculate the mean (average) of a list of numbers manually.
     """
     if len(data) == 0:
         return 0
-    total = sum(data)
+    total = 0
+    for num in data:  # Sum manually
+        total += num
     return total / len(data)
 
 def calculate_median(data):
     """
-    Calculate the median of a list of numbers.
+    Calculate the median of a list of numbers manually.
     """
     if len(data) == 0:
         return 0
-    sorted_data = sorted(data)
-    n = len(sorted_data)
+    n = len(data)
+    # Manual sorting using bubble sort
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if data[j] > data[j + 1]:
+                data[j], data[j + 1] = data[j + 1], data[j]
     mid = n // 2
-    if n % 2 == 0:
-        return (sorted_data[mid - 1] + sorted_data[mid]) / 2  # Average of the middle two
-    return sorted_data[mid]  # Middle value for odd-length list
+    return (data[mid - 1] + data[mid]) / 2 if n % 2 == 0 else data[mid]
 
 def plot_games_per_year(data):
     """
-    Plot the number of games released per year.
+    Plot the number of games released per year with descriptive statistics.
     Args:
         data (dict): A dictionary with years as keys and game counts as values.
     """
@@ -83,9 +87,11 @@ def plot_games_per_year(data):
         print("No data available to generate the graph.")
         return
 
-    # Sort data by year
-    years = sorted(data.keys())
-    counts = [data[year] for year in years]
+    # Extract years and counts
+    years, counts = [], []
+    for year, count in data.items():
+        years.append(year)
+        counts.append(count)
 
     # Calculate mean and median
     mean_count = calculate_mean(counts)
