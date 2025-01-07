@@ -56,7 +56,7 @@ def calculate_median(data):
     """
     if len(data) == 0:
         return 0
-    sorted_data = sorted(data)
+    sorted_data = sorted(data, reverse=True)  # Correct the order to match graph
     n = len(sorted_data)
     mid = n // 2
     if n % 2 == 0:
@@ -83,20 +83,19 @@ def plot_most_played_games():
 
     # Create the bar chart
     plt.figure(figsize=(12, 8))
-    plt.barh(game_names, average_playtimes, color='skyblue')
+    plt.barh(game_names[::-1], average_playtimes[::-1], color='skyblue')  # Reverse for correct order
     plt.axvline(mean_playtime, color='red', linestyle='--', label=f'Mean: {mean_playtime:.2f} mins')
     plt.axvline(median_playtime, color='green', linestyle='--', label=f'Median: {median_playtime:.2f} mins')
     plt.xlabel('Average Playtime (minutes)', fontsize=12)
     plt.ylabel('Game Names', fontsize=12)
     plt.title('Most Played Games by Average Playtime with Descriptive Statistics', fontsize=14)
     plt.legend(loc='lower right')
-    plt.gca().invert_yaxis()  # Invert y-axis to show the top game first
     plt.tight_layout()
 
     # Save the graph to the current directory
-    plt.savefig('most_played_games_stats.png')
+    plt.savefig('most_played_games_stats_corrected.png')
     plt.close()
-    print("Graph saved as 'most_played_games_stats.png'")
+    print("Graph saved as 'most_played_games_stats_corrected.png'")
 
 if __name__ == '__main__':
     plot_most_played_games()
