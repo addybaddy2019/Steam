@@ -31,7 +31,7 @@
         <!-- Most Played Games Graph -->
         <div class="graph-container">
             <h2>Most Played Games</h2>
-            <img src="{{ url_for('static', filename='Images/most_played_games.png') }}" alt="Most Played Games Graph">
+            <img src="{{ url_for('static', filename='Images/most_played_games_stats.png') }}" alt="Most Played Games Graph">
             <p>
                 Displays the top 10 most-played games by average playtime in minutes, based on data from the database.
                 You can find more information on the games <a href="{{ url_for('most_played_games') }}" class="more-info-link">here</a>.
@@ -41,7 +41,7 @@
         <!-- Games per year -->
         <div class="graph-container">
             <h2>Games per year</h2>
-            <img src="{{ url_for('static', filename='Images/games_per_year.png') }}" alt="Games per year">
+            <img src="{{ url_for('static', filename='Images/number_games_per_year.png') }}" alt="Games per year">
             <p>
                 Highlights how many games are released per year and what was the peak period of producing games.
             </p>

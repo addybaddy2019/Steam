@@ -41,9 +41,31 @@ def get_most_played_games():
         print(f"Error fetching data from database: {str(e)}")
     return []
 
+def calculate_mean(data):
+    """
+    Calculate the mean (average) of a list of numbers.
+    """
+    if len(data) == 0:
+        return 0
+    total = sum(data)
+    return total / len(data)
+
+def calculate_median(data):
+    """
+    Calculate the median of a list of numbers.
+    """
+    if len(data) == 0:
+        return 0
+    sorted_data = sorted(data)
+    n = len(sorted_data)
+    mid = n // 2
+    if n % 2 == 0:
+        return (sorted_data[mid - 1] + sorted_data[mid]) / 2  # Average of middle two
+    return sorted_data[mid]  # Middle value for odd-length list
+
 def plot_most_played_games():
     """
-    Generate a bar chart for the most-played games based on average playtime.
+    Generate a bar chart for the most-played games with descriptive statistics.
     """
     # Fetch data from the database
     data = get_most_played_games()
@@ -55,25 +77,26 @@ def plot_most_played_games():
     game_names = [row[0] for row in data]
     average_playtimes = [row[1] for row in data]
 
+    # Calculate mean and median
+    mean_playtime = calculate_mean(average_playtimes)
+    median_playtime = calculate_median(average_playtimes)
+
     # Create the bar chart
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 8))
     plt.barh(game_names, average_playtimes, color='skyblue')
-    plt.xlabel('Average Playtime (minutes)')
-    plt.ylabel('Game Names')
-    plt.title('Most Played Games by Average Playtime')
+    plt.axvline(mean_playtime, color='red', linestyle='--', label=f'Mean: {mean_playtime:.2f} mins')
+    plt.axvline(median_playtime, color='green', linestyle='--', label=f'Median: {median_playtime:.2f} mins')
+    plt.xlabel('Average Playtime (minutes)', fontsize=12)
+    plt.ylabel('Game Names', fontsize=12)
+    plt.title('Most Played Games by Average Playtime with Descriptive Statistics', fontsize=14)
+    plt.legend(loc='lower right')
     plt.gca().invert_yaxis()  # Invert y-axis to show the top game first
     plt.tight_layout()
 
     # Save the graph to the current directory
-    plt.savefig('most_played_games.png')
+    plt.savefig('most_played_games_stats.png')
     plt.close()
-    print("Graph saved as 'most_played_games.png'")
+    print("Graph saved as 'most_played_games_stats.png'")
 
 if __name__ == '__main__':
     plot_most_played_games()
-# Bronen:
-# https://canvas.hu.nl/courses/44597/pages/ai6-algoritmiek-lineaire-regressie
-# https://youtu.be/zcUliVmptHY?feature=shared
-# https://www.khanacademy.org/data/more-on-regression/v/regression-line-example
-# https://chatgpt.com/share/67649710-c464-8001-b3d1-bcd8e5397911
-# https://www-jetbrains-com.translate.goog/?hist=true#session
