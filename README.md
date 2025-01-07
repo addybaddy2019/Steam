@@ -3,7 +3,7 @@
 ## Overzicht
 Dit project is een dashboardapplicatie waarmee gebruikers interactief statistieken en informatie over games op het Steam-platform kunnen verkennen.  
 De applicatie biedt diverse functionaliteiten, waaronder:
-- Het bekijken van gedetailleerde game-informatie (prijs, ratings, genre, etc.).
+- Het bekijken van gedetailleerde game-informatie (prijs, ratings, genre,taal, etc.).
 - Een grafische gebruikersinterface (GUI) die eenvoudig te navigeren is.
 - Statistische inzichten via grafieken zoals "Meest gespeelde games" en "Playtime vs. Achievements."
 - Een unieke verbinding met een Azure PostgreSQL-database, toegankelijk via een IP-adres.
