@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.DEBUG, filename='app.log', filemode='a',
 # Database connection details
 DB_HOST = '40.114.250.29'
 DB_PORT = '5432'
-DB_NAME = 'steamdb'
+DB_NAME = 'postgres'
 DB_USER = 'teammember1'
 DB_PASSWORD = 'ASDFG'
 
@@ -343,3 +343,8 @@ def profile_redirect():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+# Bronnen:
+# https://youtu.be/zliVmptHY?feature=shared
+# https://www.khanacademy.org/data
+# https://chatgpt.com/share/883444710-c234-5301-b3fgde5397911

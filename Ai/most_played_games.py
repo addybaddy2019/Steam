@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Database connection details
 DB_HOST = '40.114.250.29'
 DB_PORT = '5432'
-DB_NAME = 'steamdb'
+DB_NAME = 'postgres'
 DB_USER = 'teammember1'
 DB_PASSWORD = 'ASDFG'
 

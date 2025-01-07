@@ -4,7 +4,7 @@ from psycopg2 import sql
 import requests
 import logging
 import json
-
+# Team: FAAAM
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 
