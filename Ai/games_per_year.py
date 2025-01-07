@@ -51,6 +51,28 @@ def fetch_games_per_year():
         print(f"Error fetching data from database: {str(e)}")
     return {}
 
+def calculate_mean(data):
+    """
+    Calculate the mean (average) of a list of numbers.
+    """
+    if len(data) == 0:
+        return 0
+    total = sum(data)
+    return total / len(data)
+
+def calculate_median(data):
+    """
+    Calculate the median of a list of numbers.
+    """
+    if len(data) == 0:
+        return 0
+    sorted_data = sorted(data)
+    n = len(sorted_data)
+    mid = n // 2
+    if n % 2 == 0:
+        return (sorted_data[mid - 1] + sorted_data[mid]) / 2  # Average of the middle two
+    return sorted_data[mid]  # Middle value for odd-length list
+
 def plot_games_per_year(data):
     """
     Plot the number of games released per year.
@@ -65,17 +87,24 @@ def plot_games_per_year(data):
     years = sorted(data.keys())
     counts = [data[year] for year in years]
 
+    # Calculate mean and median
+    mean_count = calculate_mean(counts)
+    median_count = calculate_median(counts)
+
     # Plot the data
-    plt.figure(figsize=(12, 6))
-    plt.bar(years, counts, color='skyblue')
+    plt.figure(figsize=(14, 7))
+    plt.bar(years, counts, color='skyblue', label='Games Released')
+    plt.axhline(mean_count, color='red', linestyle='--', label=f'Mean: {mean_count:.2f}')
+    plt.axhline(median_count, color='green', linestyle='--', label=f'Median: {median_count:.2f}')
     plt.xlabel('Year', fontsize=14)
     plt.ylabel('Number of Games Released', fontsize=14)
-    plt.title('Number of Games Released Per Year', fontsize=16)
+    plt.title('Number of Games Released Per Year with Descriptive Statistics', fontsize=16)
+    plt.legend(loc='upper left')
     plt.tight_layout()
 
     # Save the graph
-    plt.savefig('games_per_year.png')
-    print("Graph saved as 'games_per_year.png'")
+    plt.savefig('games_per_year_with_stats.png')
+    print("Graph saved as 'games_per_year_with_stats.png'")
     plt.show()
 
 if __name__ == '__main__':
