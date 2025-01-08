@@ -24,7 +24,7 @@
                 <li><a href="{{ url_for('home') }}">Dashboard</a></li>
                 <li><a href="{{ url_for('stats') }}">Stats</a></li>
                 {% if session.get('logged_in') %}
-                    <li><a href="{{ url_for('user_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('profile_redirect') }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
                     <li><a href="{{ url_for('login_page') }}">Login</a></li>
