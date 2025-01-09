@@ -1,4 +1,4 @@
-from flask import Flask, render_template, abort, url_for, request, redirect, session
+from flask import Flask, render_template, abort, url_for, request, redirect, session, jsonify
 import psycopg2
 from psycopg2 import sql
 import requests
@@ -91,6 +91,123 @@ def get_game_data_from_db(appid):
         logging.error(f"Error fetching data from database: {str(e)}")
     return None
 
+@app.route('/autocomplete', methods=['GET'])
+def autocomplete():
+    term = request.args.get('term', '')
+    suggestions = []
+
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+        query = """
+            SELECT appid, name
+            FROM games_data
+            WHERE CAST(appid AS TEXT) LIKE %s OR name ILIKE %s
+            LIMIT 10;
+        """
+        cursor.execute(query, (f'%{term}%', f'%{term}%'))
+        results = cursor.fetchall()
+        cursor.close()
+        connection.close()
+
+        suggestions = [{"label": f"{row[1]} (ID: {row[0]})", "value": row[1]} for row in results]
+    except Exception as e:
+        logging.error(f"Error fetching autocomplete suggestions: {str(e)}")
+
+    return json.dumps(suggestions)
+
+
+
+def get_game_data_by_id_or_name(identifier):
+    """
+    Fetch game data by appid or name from the database.
+    """
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+
+        # Query to search by appid or name
+        query = """
+        SELECT * FROM games_data
+        WHERE CAST(appid AS TEXT) = %s OR LOWER(name) = LOWER(%s);
+        """
+        cursor.execute(query, (identifier, identifier))
+        game_data = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        if game_data:
+            return {
+                "appid": game_data[0],
+                "name": game_data[1],
+                "release_date": str(game_data[2]),
+                "developer": game_data[4] or "No Developer Available",
+                "publisher": game_data[5] or "No Publisher Available",
+                "platforms": {
+                    "windows": 'windows' in (game_data[6] or '').lower(),
+                    "mac": 'mac' in (game_data[6] or '').lower(),
+                    "linux": 'linux' in (game_data[6] or '').lower()
+                },
+                "required_age": game_data[7] or "N/A",
+                "categories": game_data[8].split(';') if game_data[8] else [],
+                "genres": game_data[9].split(';') if game_data[9] else [],
+                "steamspy_tags": game_data[10].split(';') if game_data[10] else [],
+                "achievements": game_data[11] or "N/A",
+                "positive_ratings": game_data[12] or "N/A",
+                "negative_ratings": game_data[13] or "N/A",
+                "average_playtime": game_data[14] or "N/A",
+                "median_playtime": game_data[15] or "N/A",
+                "owners": game_data[16] or "N/A",
+                "price": game_data[17] or "N/A"
+            }
+
+    except Exception as e:
+        logging.error(f"Error fetching data: {str(e)}")
+        return None
+
+@app.route('/search_suggestions', methods=['GET'])
+def search_suggestions():
+    """
+    Fetch search suggestions for appid or game name.
+    """
+    term = request.args.get('term', '').lower()
+    suggestions = []
+    try:
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+        cursor = connection.cursor()
+
+        # Query to fetch matching appids or names
+        query = """
+        SELECT appid, name FROM games_data
+        WHERE CAST(appid AS TEXT) LIKE %s OR LOWER(name) LIKE %s
+        LIMIT 10;
+        """
+        cursor.execute(query, (f"%{term}%", f"%{term}%"))
+        results = cursor.fetchall()
+        cursor.close()
+        connection.close()
+        suggestions = [{"appid": row[0], "name": row[1]} for row in results]
+    except Exception as e:
+        logging.error(f"Error fetching suggestions: {str(e)}")
+    return jsonify(suggestions)
+
 def get_user_credentials():
     """
     Fetch user credentials from the user_credentials table in the Azure PostgreSQL database.
@@ -134,27 +251,32 @@ def get_friends_list():
 @app.route('/', methods=['GET', 'POST'])
 def home():
     if request.method == 'POST':
-        appid = request.form.get('appid')
+        identifier = request.form.get('search_input')
         api_key = request.form.get('api_key')
-        if appid and api_key:
-            return redirect(url_for('profile', appid=appid, api_key=api_key))
-        return render_template('home.html', error="App ID and API Key are required.")
+
+        if not identifier or not api_key:
+            return render_template('home.html', error="Both App ID/Game Name and API Key are required.")
+
+        game_data = get_game_data_by_id_or_name(identifier)
+        if game_data:
+            return redirect(url_for('profile', appid=game_data['appid']))
+        else:
+            return render_template('home.html', error="Game not found. Please check the input.")
+
     return render_template('home.html')
 
 @app.route('/profile', methods=['GET'])
 def profile():
-    # No login required for viewing game details
     appid = request.args.get('appid')
 
     if not appid:
-        abort(400)
+        abort(400, description="App ID is required.")
 
-    user_profile = get_game_data_from_db(appid)
-    if user_profile:
-        return render_template('profile.html', user_profile=user_profile)
+    game_data = get_game_data_by_id_or_name(appid)
+    if game_data:
+        return render_template('profile.html', user_profile=game_data)
     else:
-        # Optional: Include API handling if needed for additional data
-        abort(404)
+        abort(404, description="Game not found.")
 
 @app.route('/game/<int:appid>', methods=['GET'])
 def game_details(appid):
