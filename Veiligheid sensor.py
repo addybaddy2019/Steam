@@ -4,7 +4,6 @@ import neopixel
 import socket
  
 np = neopixel.NeoPixel(machine.Pin(28), 8)
- 
 trigger_pin = Pin(17, Pin.OUT)
 echo_pin = Pin(13, Pin.IN)
  
@@ -23,13 +22,13 @@ def measure_distance():
 def display_distance(distance):
     """Laat de afstand d.m.v. de leds zien."""
     if distance >= 100:
-        np.fill((0, 0, 0))  # uit
+        np.fill((0, 0, 0)) 
     elif distance >= 50:
-        np.fill((0, 255, 127))  # Groen
+        np.fill((0, 255, 127)) 
     elif distance >= 20:
-        np.fill((0, 255, 0))  # Lichtgroen
+        np.fill((0, 255, 0)) 
     elif distance >= 10:
-        np.fill((255, 127, 0))  # Oranje
+        np.fill((255, 127, 0)) 
     elif distance >=0:
         np.fill((255, 0, 0))
     else:
