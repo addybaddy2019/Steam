@@ -5,33 +5,132 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam Game Profiles</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 
+    <style>
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1000;
+            background-color: white;
+            border: 1px solid #ddd;
+        }
+
+        body {
+            color: white; /* Ensure all text is white */
+        }
+
+        .form-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: white; /* Text color for labels */
+        }
+
+        input[type="text"], input[type="submit"] {
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056A3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 1rem;
+        }
+
+        .banner-div img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <header>
         {% include 'header.html' %}
     </header>
 
-    <!-- Add Banner -->
+    <!-- Banner -->
     <div class="banner-div">
         <img src="{{ url_for('static', filename='images/steam-logo-welcome-banner.jpg') }}" alt="Steam Welcome Banner">
     </div>
 
     <h1 class="dashboard-text">Welcome to Steam Game Profiles</h1>
 
-    <!-- Form for Steam App ID and API Key -->
-    <form action="{{ url_for('profile') }}" method="get">
-        <label for="appid" class="form-label">Enter Steam App ID:</label>
-        <input type="text" id="appid" name="appid" required>
-        <br>
-        <label for="api_key" class="form-label">Enter Steam API Key:</label>
-        <input type="text" id="api_key" name="api_key" required>
-        <br>
-        <input type="submit" value="Get Profile">
-    </form>
+    <!-- Form for Steam App ID or Game Name with API Key -->
+    <div class="form-container">
+        <form action="{{ url_for('home') }}" method="post">
+            <label for="search_input" class="form-label">Enter Steam App ID or Game Name:</label>
+            <input type="text" id="search_input" name="search_input" required>
+            <br>
+            <label for="api_key" class="form-label">Enter Steam API Key:</label>
+            <input type="text" id="api_key" name="api_key" required>
+            <br>
+            <input type="submit" value="Search">
+        </form>
+
+        <!-- Error message display -->
+        {% if error %}
+        <p class="error-message">{{ error }}</p>
+        {% endif %}
+    </div>
 
     <footer>
         {% include 'footer.html' %}
     </footer>
+
+    <!-- Autocomplete script -->
+    <script>
+        $(document).ready(function() {
+            $("#search_input").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "{{ url_for('autocomplete') }}",
+                        dataType: "json",
+                        data: {
+                            term: request.term
+                        },
+                        success: function(data) {
+                            response($.map(data, function(item) {
+                                return {
+                                    label: item.label,
+                                    value: item.value
+                                };
+                            }));
+                        }
+                    });
+                },
+                minLength: 2,
+                select: function(event, ui) {
+                    $("#search_input").val(ui.item.value);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
