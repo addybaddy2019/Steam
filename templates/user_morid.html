@@ -120,16 +120,16 @@
     </style>
 </head>
 <body>
-    <header>
+    <header role="banner">
         {% include 'header.html' %}
     </header>
 
     <div class="profile-container">
         <!-- Left Section -->
         <div class="left-section">
-            <img src="{{ url_for('static', filename='Images/pfp_morid.png') }}" alt="User Profile Picture">
-            <h2>{{ session['username'] }}</h2>
-            <div class="level">Level 32</div>
+            <img src="{{ url_for('static', filename='images/pfp_morid.png') }}" alt="User Profile Picture" onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default-pfp.png') }}';">
+            <h2>{{ session.get('username', 'Guest') }}</h2>
+            <div class="level">Level 911</div>
         </div>
 
         <!-- Right Section -->
@@ -139,7 +139,7 @@
                 <h3>Recent Activity</h3>
                 <ul>
                     <li><strong>Valorant</strong> - 34 hrs on record (last played on Feb 22)</li>
-                    <li><strong>Chess</strong> - 23 hrs on record (last played on Sep 30)</li>
+                    <li><strong>Flying simulator</strong> - 200 hrs on record (last played on Sep 11)</li>
                     <li><strong>Krunker Io</strong> - 11 hrs on record (last played on Aug 2)</li>
                 </ul>
             </div>
@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    <footer>
+    <footer role="contentinfo">
         {% include 'footer.html' %}
     </footer>
 </body>
