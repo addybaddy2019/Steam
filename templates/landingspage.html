@@ -1,32 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-</head>
-<body>
-    <header>
-        {% include 'header.html' %}
-    </header>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Landing Page</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    </head>
+    <body>
+        <header>
+            {% include 'header.html' %}
+        </header>
 
-    <div class="content-div">
-        <h1 class="dashboard-text">Welcome to Steam Dashboard</h1>
+        <div class="content-div">
+            <h1 class="dashboard-text">Welcome to Steam Dashboard</h1>
 
-        <form method="GET" action="{{ url_for('profile') }}">
-            <label for="appid" class="form-label">Steam App ID:</label>
-            <input type="text" name="appid" id="appid" required>
-            <br>
-            <label for="api_key" class="form-label">Steam API Key:</label>
-            <input type="text" name="api_key" id="api_key" required>
-            <br>
-            <input type="submit" value="Get Game Profile">
-        </form>
-    </div>
+            <form method="GET" action="{{ url_for('profile') }}">
+                <label for="appid" class="form-label">Steam App ID:</label>
+                <input type="text" name="appid" id="appid" required>
+                <br>
+                <label for="api_key" class="form-label">Steam API Key:</label>
+                <input type="text" name="api_key" id="api_key" required>
+                <br>
+                <input type="submit" value="Get Game Profile">
+            </form>
+        </div>
 
-    <footer>
-        {% include 'footer.html' %}
-    </footer>
-</body>
-</html>
+        <footer>
+            {% include 'footer.html' %}
+        </footer>
+    </body>
+    </html>
