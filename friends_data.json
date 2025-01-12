@@ -5,7 +5,7 @@
         "playing": "Minecraft"
     },
     {
-        "name": "Adnan Omar",
+        "name": "Adnan",
         "status": "online",
         "playing": "League of Legends (Arcane)"
     },
@@ -17,17 +17,22 @@
     {
         "name": "Morrid",
         "status": "away",
-        "playing": "Kruner IO"
+        "playing": "Task Force Delta - Afghanistan"
+    },
+    {
+        "name": "Mo Essam",
+        "status": "busy",
+        "playing": "Sleeping simulator"
     },
     {
         "name": "Ahmed",
         "status": "away",
-        "playing": "Roblox"
+        "playing": "Rocket League"
     },
     {
         "name": "Serik",
         "status": "online",
-        "playing": "Counter-Strike: Global Offensive"
+        "playing": "SIM 4"
     },
     {
         "name": "Oscar",
@@ -37,7 +42,7 @@
     {
         "name": "Adam",
         "status": "online",
-        "playing": "Valorant"
+        "playing": "Super Mario"
     },
     {
         "name": "Abdulilah",
@@ -57,7 +62,7 @@
     {
         "name": "Rachid",
         "status": "away",
-        "playing": "World of Warcraft"
+        "playing": "Cashier Simulator"
     },
     {
         "name": "Melih",
@@ -67,12 +72,12 @@
     {
         "name": "Safoun",
         "status": "busy",
-        "playing": "Genshin Impact"
+        "playing": "Call Of Duty"
     },
     {
         "name": "Jesmar",
         "status": "online",
-        "playing": "overwatch 2"
+        "playing": "Valorant"
     },
     {
         "name": "Rick",
@@ -102,16 +107,11 @@
     {
         "name": "Nabil",
         "status": "busy",
-        "playing": "The Witcher 3"
+        "playing": "Forza 4"
     },
     {
         "name": "Sem",
         "status": "online",
         "playing": "Rocket League"
-    },
-    {
-        "name": "Test Project",
-        "status": "offline",
-        "playing": ""
     }
 ]
